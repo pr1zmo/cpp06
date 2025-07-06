@@ -5,27 +5,39 @@
 #include <string>
 
 using namespace std;
+typedef int c_type;
 
 class ScalarConvert {
 	private:
-		void _convert();
-		enum type{
+		string const _value;
+		bool isInt(string x);
+		bool isFloat(string x);
+		bool isChar(string x);
+		bool isDouble(string x);
+		c_type getType(string x);
+		string getValue(string x, int type);
+		void convertInt(string x);
+	public:
+		void printChar();
+		void printInt();
+		void printFLoat();
+		void printDouble();
+		string _convert(string x);
+		string getString();
+		enum c_type{
 			INT,
 			CHAR,
 			DOUBLE,
 			FLOAT,
+			OTHER
 		};
-		bool isInt(std::string x);
-		bool isFloat(std::string x);
-		bool isChar(std::string x);
-		bool isDouble(std::string x);
-
-	public:
 		ScalarConvert();
-		ScalarConvert(std::string x);
+		ScalarConvert(string x);
 		ScalarConvert(const ScalarConvert& other);
 		ScalarConvert& operator=(const ScalarConvert& other);
 		~ScalarConvert();
 };
+
+ostream& operator<<(ostream& o, ScalarConvert &conv);
 
 #endif

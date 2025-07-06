@@ -1,31 +1,22 @@
 #include "ScalarConvert.hpp"
 
 ScalarConvert::ScalarConvert()
-	{
+	: _value("0") {
 	cout << "ScalarConvert: Default constructor called" << endl;
 }
 
 ScalarConvert::ScalarConvert(string x)
-	{
-	if (isInt(x))
-		cout << "Integer" << endl;
-	else if (isDouble(x))
-		cout << "Double" << endl;	
-	else if (isFloat(x))
-		cout << "Float" << endl;
-	else if (isChar(x))
-		cout << "Char" << endl;
-	else
-		cout << "Impossible" << endl;
+	: _value(x) {
+	this->_convert(x);
 }
 
 ScalarConvert::ScalarConvert(const ScalarConvert& other)
-	{
+	: _value(other._value) {
 	cout << "ScalarConvert: Copy constructor called" << endl;
 	*this = other;
 }
 
-ScalarConvert& ScalarConvert::operator=(const ScalarConvert& other) {
+ScalarConvert& ScalarConvert::operator=(const ScalarConvert& other){
 	cout << "ScalarConvert: Copy assignment operator called" << endl;
 	if (this != &other) {
 		//
@@ -90,4 +81,71 @@ bool ScalarConvert::isChar(string x){
 	if (x.length() == 1 && isalpha(x[0]))
 		return true;
 	return false;
+}
+
+c_type ScalarConvert::getType(string x){
+	if (isInt(x))
+		return (INT);
+	else if (isDouble(x))
+		return (DOUBLE);
+	else if (isFloat(x))
+		return (FLOAT);
+	else if (isChar(x))
+		return (CHAR);
+	return (OTHER);
+}
+
+string ScalarConvert::getValue(string x, int type){
+	string result;
+	switch(type){
+		case INT: {
+
+		}
+		case FLOAT: {
+
+		}
+		case DOUBLE: {
+
+		}
+		case CHAR: {
+
+		}
+	}
+	return NULL;
+}
+
+void ScalarConvert::convertInt(string x){
+	cout << "Int: " << getValue(x, INT) << endl;
+}
+
+string ScalarConvert::getString(){
+	return this->_value;
+}
+
+ostream& operator<<(ostream& o, ScalarConvert conv){
+	o << conv.getString() << endl;
+	return o;
+}
+
+string ScalarConvert::_convert(string x){
+	int type = getType(x);
+	if (type == INT)
+		convertInt(x);
+	return ("Hallo\n");
+}
+
+void	ScalarConvert::printChar() {
+	
+}
+
+ostream& operator<<(ostream& o, ScalarConvert &conv){
+	o << "char: "; 
+	conv.printChar();
+	o << "int: ";
+	conv.printInt();
+	o << "float: ";
+	conv.printFLoat();
+	o << "double: ";
+	conv.printDouble();
+	return o;
 }
