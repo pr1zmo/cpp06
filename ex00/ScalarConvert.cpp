@@ -2,7 +2,6 @@
 
 ScalarConvert::ScalarConvert()
 	: _value("0") {
-	cout << "ScalarConvert: Default constructor called" << endl;
 }
 
 ScalarConvert::ScalarConvert(string x)
@@ -12,20 +11,14 @@ ScalarConvert::ScalarConvert(string x)
 
 ScalarConvert::ScalarConvert(const ScalarConvert& other)
 	: _value(other._value) {
-	cout << "ScalarConvert: Copy constructor called" << endl;
 	*this = other;
 }
 
 ScalarConvert& ScalarConvert::operator=(const ScalarConvert& other){
-	cout << "ScalarConvert: Copy assignment operator called" << endl;
-	if (this != &other) {
-		//
-	}
 	return *this;
 }
 
 ScalarConvert::~ScalarConvert() {
-	cout << "ScalarConvert: Destructor called" << endl;
 }
 
 bool ScalarConvert::isInt(string x){
@@ -83,7 +76,7 @@ bool ScalarConvert::isChar(string x){
 	return false;
 }
 
-c_type ScalarConvert::getType(string x){
+int ScalarConvert::getType(string x){
 	if (isInt(x))
 		return (INT);
 	else if (isDouble(x))
@@ -131,11 +124,30 @@ string ScalarConvert::_convert(string x){
 	int type = getType(x);
 	if (type == INT)
 		convertInt(x);
-	return ("Hallo\n");
 }
 
 void	ScalarConvert::printChar() {
 	
+}
+
+#include <limits>
+
+bool ScalarConvert::isPseudoLiteral(const std::string& s) {
+	return s == "nan"  || s == "nanf" ||
+			s == "+inf" || s == "+inff"||
+			s == "-inf" || s == "-inff";
+}
+
+double ScalarConvert::parsePseudoDouble(const std::string& s) {
+	if (s == "-inf"  || s == "-inff") return -std::numeric_limits<double>::infinity();
+	if (s == "+inf"  || s == "+inff") return  std::numeric_limits<double>::infinity();
+	return                                       std::numeric_limits<double>::quiet_NaN();
+}
+
+float ScalarConvert::parsePseudoFloat(const std::string& s) {
+	if (s == "-inf"  || s == "-inff") return -std::numeric_limits<float>::infinity();
+	if (s == "+inf"  || s == "+inff") return  std::numeric_limits<float>::infinity();
+	return                                       std::numeric_limits<float>::quiet_NaN();
 }
 
 ostream& operator<<(ostream& o, ScalarConvert &conv){

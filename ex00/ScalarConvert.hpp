@@ -18,19 +18,23 @@ class ScalarConvert {
 		string getValue(string x, int type);
 		void convertInt(string x);
 	public:
+		enum c_type{
+			INT,
+			CHAR,
+			DOUBLE,
+			FLOAT,
+			PSEUDO,
+			OTHER
+		};
+		static bool isPseudoLiteral(const std::string& s);
+		static double  parsePseudoDouble (const std::string& s);
+		static float   parsePseudoFloat  (const std::string& s);
 		void printChar();
 		void printInt();
 		void printFLoat();
 		void printDouble();
 		string _convert(string x);
 		string getString();
-		enum c_type{
-			INT,
-			CHAR,
-			DOUBLE,
-			FLOAT,
-			OTHER
-		};
 		ScalarConvert();
 		ScalarConvert(string x);
 		ScalarConvert(const ScalarConvert& other);

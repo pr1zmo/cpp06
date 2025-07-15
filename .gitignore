@@ -5,3 +5,4 @@ serializer
 typeinfo
 test*
 .vscode
+*.tldr
