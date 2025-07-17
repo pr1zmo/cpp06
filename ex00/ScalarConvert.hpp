@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include <limits>
+#include <iomanip>
 
 using namespace std;
 typedef int c_type;
@@ -10,14 +12,16 @@ typedef int c_type;
 class ScalarConvert {
 	private:
 		string const _value;
-		bool isInt(string x);
-		bool isFloat(string x);
-		bool isChar(string x);
-		bool isDouble(string x);
-		c_type getType(string x);
-		string getValue(string x, int type);
-		void convertInt(string x);
 	public:
+		ScalarConvert();
+		ScalarConvert(string x);
+		ScalarConvert(const ScalarConvert& other);
+		ScalarConvert& operator=(const ScalarConvert& other);
+		~ScalarConvert();
+		bool isInt(string x, int *res);
+		bool isFloat(string x, float *res);
+		bool isChar(string x, char *res);
+		bool isDouble(string x, double *res);
 		enum c_type{
 			INT,
 			CHAR,
@@ -26,20 +30,27 @@ class ScalarConvert {
 			PSEUDO,
 			OTHER
 		};
-		static bool isPseudoLiteral(const std::string& s);
-		static double  parsePseudoDouble (const std::string& s);
-		static float   parsePseudoFloat  (const std::string& s);
-		void printChar();
-		void printInt();
-		void printFLoat();
-		void printDouble();
-		string _convert(string x);
-		string getString();
-		ScalarConvert();
-		ScalarConvert(string x);
-		ScalarConvert(const ScalarConvert& other);
-		ScalarConvert& operator=(const ScalarConvert& other);
-		~ScalarConvert();
+		typedef struct types{
+			int i_res;
+			float f_res;
+			char c_res;
+			double d_res;
+			std::string p_res;
+			std::string o_res;
+		}	s_types;
+		static bool isPseudoLiteral(const string& s);
+		static double parsePseudoDouble (const string& s);
+		static float parsePseudoFloat  (const string& s);
+		int getType(const string& s);
+		void _convert(const string& s);
+		void printInt(const int x);
+		void printChar(const char x);
+		void printDouble(const double x);
+		void printFloat(const float x);
+		void printPseudo(const std::string x);
+		void printError(void);
+		void printAllConversions(double value);
+		int precision;
 };
 
 ostream& operator<<(ostream& o, ScalarConvert &conv);
