@@ -6,22 +6,21 @@
 #include <limits>
 #include <iomanip>
 
-using namespace std;
 typedef int c_type;
 
 class ScalarConvert {
 	private:
-		string const _value;
+		std::string const _value;
 	public:
 		ScalarConvert();
-		ScalarConvert(string x);
+		ScalarConvert(std::string x);
 		ScalarConvert(const ScalarConvert& other);
 		ScalarConvert& operator=(const ScalarConvert& other);
 		~ScalarConvert();
-		bool isInt(string x, int *res);
-		bool isFloat(string x, float *res);
-		bool isChar(string x, char *res);
-		bool isDouble(string x, double *res);
+		bool isInt(std::string x, int *res);
+		bool isFloat(std::string x, float *res);
+		bool isChar(std::string x, char *res);
+		bool isDouble(std::string x, double *res);
 		enum c_type{
 			INT,
 			CHAR,
@@ -38,21 +37,16 @@ class ScalarConvert {
 			std::string p_res;
 			std::string o_res;
 		}	s_types;
-		static bool isPseudoLiteral(const string& s);
-		static double parsePseudoDouble (const string& s);
-		static float parsePseudoFloat  (const string& s);
-		int getType(const string& s);
-		void _convert(const string& s);
-		void printInt(const int x);
-		void printChar(const char x);
-		void printDouble(const double x);
-		void printFloat(const float x);
+		static bool isPseudoLiteral(const std::string& s);
+		static double parsePseudoDouble(const std::string& s);
+		static float parsePseudoFloat(const std::string& s);
+		void _convert(const std::string& s);
 		void printPseudo(const std::string x);
 		void printError(void);
 		void printAllConversions(double value);
 		int precision;
 };
 
-ostream& operator<<(ostream& o, ScalarConvert &conv);
+// std::ostream& operator<<(std::ostream& o, ScalarConvert &conv);
 
 #endif

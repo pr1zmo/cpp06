@@ -4,7 +4,7 @@ ScalarConvert::ScalarConvert()
 	: _value("0") , precision(1) {
 }
 
-ScalarConvert::ScalarConvert(string x)
+ScalarConvert::ScalarConvert(std::string x)
 	: _value(x) , precision(1) {
 	int prec;
 	for (int i = 0; i < x.size(); i++){
@@ -29,35 +29,35 @@ ScalarConvert& ScalarConvert::operator=(const ScalarConvert& other){
 ScalarConvert::~ScalarConvert() {
 }
 
-bool ScalarConvert::isInt(string x, int *res){
+bool ScalarConvert::isInt(std::string x, int *res){
 	try {
 		size_t pos;
 		*res = stoi(x, &pos);
 		return pos == x.length();
 	}
-	catch (const invalid_argument&){
+	catch (const std::invalid_argument&){
 		return false;
 	}
-	catch (const out_of_range&){
+	catch (const std::out_of_range&){
 		return false;
 	}
 }
 
-bool ScalarConvert::isDouble(string x, double *res){
+bool ScalarConvert::isDouble(std::string x, double *res){
 	try{
 		size_t pos;
 		*res = stod(x, &pos);
 		return pos == x.length();
 	}
-	catch (const invalid_argument&){
+	catch (const std::invalid_argument&){
 		return false;
 	}
-	catch (const out_of_range&){
+	catch (const std::out_of_range&){
 		return false;
 	}
 }
 
-bool ScalarConvert::isFloat(string x, float *res){
+bool ScalarConvert::isFloat(std::string x, float *res){
 	try {
 		size_t pos;
 		*res = stof(x, &pos);
@@ -70,15 +70,15 @@ bool ScalarConvert::isFloat(string x, float *res){
 		}
 		return false;
 	}
-	catch (const invalid_argument&){
+	catch (const std::invalid_argument&){
 		return false;
 	}
-	catch (const out_of_range&){
+	catch (const std::out_of_range&){
 		return false;
 	}
 }
 
-bool ScalarConvert::isChar(string x, char *c){
+bool ScalarConvert::isChar(std::string x, char *c){
 	if (x.length() == 1 && isalpha(x[0])){
 		*c = x[0];
 		return true;
@@ -86,22 +86,22 @@ bool ScalarConvert::isChar(string x, char *c){
 	return false;
 }
 
-bool ScalarConvert::isPseudoLiteral(const string& s) {
+bool ScalarConvert::isPseudoLiteral(const std::string& s) {
 	return s == "nan"  || s == "nanf" ||
 			s == "+inf" || s == "+inff"||
 			s == "-inf" || s == "-inff";
 }
 
-double ScalarConvert::parsePseudoDouble(const string& s) {
-	if (s == "-inf"  || s == "-inff") return -numeric_limits<double>::infinity();
-	if (s == "+inf"  || s == "+inff") return  numeric_limits<double>::infinity();
-	return numeric_limits<double>::quiet_NaN();
+double ScalarConvert::parsePseudoDouble(const std::string& s) {
+	if (s == "-inf"  || s == "-inff") return -std::numeric_limits<double>::infinity();
+	if (s == "+inf"  || s == "+inff") return  std::numeric_limits<double>::infinity();
+	return std::numeric_limits<double>::quiet_NaN();
 }
 
-float ScalarConvert::parsePseudoFloat(const string& s) {
-	if (s == "-inf"  || s == "-inff") return -numeric_limits<float>::infinity();
-	if (s == "+inf"  || s == "+inff") return  numeric_limits<float>::infinity();
-	return numeric_limits<float>::quiet_NaN();
+float ScalarConvert::parsePseudoFloat(const std::string& s) {
+	if (s == "-inf"  || s == "-inff") return -std::numeric_limits<float>::infinity();
+	if (s == "+inf"  || s == "+inff") return  std::numeric_limits<float>::infinity();
+	return std::numeric_limits<float>::quiet_NaN();
 }
 
 void ScalarConvert::printAllConversions(double value) {
@@ -130,30 +130,30 @@ void ScalarConvert::printPseudo(const std::string s){
 	std::cout << "Double: " << parsePseudoDouble(s) << std::endl;
 }
 
-void ScalarConvert::_convert(const string &s){
+void ScalarConvert::_convert(const std::string &s){
 	types res;
 	if (isChar(this->_value, &res.c_res)){
-		cout << "Type detected: CHAR\n";
+		std::cout << "Type detected: CHAR\n";
 		printAllConversions(static_cast<double>(res.c_res));
 	}
 	else if (isInt(this->_value, &res.i_res)){
-		cout << "Type detected: INT\n";
+		std::cout << "Type detected: INT\n";
 		printAllConversions(static_cast<double>(res.i_res));
 	}
 	else if (isPseudoLiteral(this->_value)){
-		cout << "Type detected: PSEUDO LITERAL\n";
+		std::cout << "Type detected: PSEUDO LITERAL\n";
 		printPseudo(this->_value);
 	}
 	else if (isDouble(this->_value, &res.d_res)){
-		cout << "Type detected: DOUBLE\n";
+		std::cout << "Type detected: DOUBLE\n";
 		printAllConversions(res.d_res);
 	}
 	else if (isFloat(this->_value, &res.f_res)){
-		cout << "Type detected: FLOAT\n";
+		std::cout << "Type detected: FLOAT\n";
 		printAllConversions(static_cast<double>(res.f_res));
 	}
 	else {
-		cout << "Type detected: OTHER\n";
+		std::cout << "Type detected: OTHER\n";
 		printError();
 	}
 }
