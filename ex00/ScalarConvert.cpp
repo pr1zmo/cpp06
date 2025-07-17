@@ -6,10 +6,12 @@ ScalarConvert::ScalarConvert()
 
 ScalarConvert::ScalarConvert(string x)
 	: _value(x) , precision(1) {
+	int prec;
 	for (int i = 0; i < x.size(); i++){
 		if (x[i] == '.')
-			this->precision++;
+			prec++;
 	}
+	prec > 0 ? this->precision *= prec : this->precision;
 	this->_convert(x);
 }
 
@@ -102,10 +104,6 @@ float ScalarConvert::parsePseudoFloat(const string& s) {
 	return numeric_limits<float>::quiet_NaN();
 }
 
-// void printTypes(types res, int type){
-// 	std::cout << static_cast<int>(result);
-// }
-
 void ScalarConvert::printAllConversions(double value) {
 	if (value >= 32 && value <= 126 && value == static_cast<int>(value))
 		std::cout << "Char: '" << static_cast<char>(value) << "'\n";
@@ -125,6 +123,13 @@ void ScalarConvert::printError(){
 	std::cout << "Error: invalid input" << std::endl;
 }
 
+void ScalarConvert::printPseudo(const std::string s){
+	std::cout << "Char: impossible" << std::endl;
+	std::cout << "Int: impossible" << std::endl;
+	std::cout << "Float: " << parsePseudoFloat(s) << "f" << std::endl;
+	std::cout << "Double: " << parsePseudoDouble(s) << std::endl;
+}
+
 void ScalarConvert::_convert(const string &s){
 	types res;
 	if (isChar(this->_value, &res.c_res)){
@@ -137,7 +142,7 @@ void ScalarConvert::_convert(const string &s){
 	}
 	else if (isPseudoLiteral(this->_value)){
 		cout << "Type detected: PSEUDO LITERAL\n";
-		printAllConversions(parsePseudoDouble(this->_value));
+		printPseudo(this->_value);
 	}
 	else if (isDouble(this->_value, &res.d_res)){
 		cout << "Type detected: DOUBLE\n";
@@ -152,44 +157,3 @@ void ScalarConvert::_convert(const string &s){
 		printError();
 	}
 }
-// int ScalarConvert::getType(const string &s){
-// 	types res;
-// 	if (isChar(this->_value, &res.c_res)){
-// 		cout << "Type detected: CHAR\n";
-// 		printAllConversions(static_cast<double>(res.c_res));
-// 		return CHAR;
-// 	}
-// 	else if (isInt(this->_value, &res.i_res)){
-// 		cout << "Type detected: INT\n";
-// 		printAllConversions(static_cast<double>(res.i_res));
-// 		return INT;
-// 	}
-// 	else if (isPseudoLiteral(this->_value)){
-// 		cout << "Type detected: PSEUDO LITERAL\n";
-// 		printAllConversions(parsePseudoDouble(this->_value));
-// 		return PSEUDO;
-// 	}
-// 	else if (isDouble(this->_value, &res.d_res)){
-// 		cout << "Type detected: DOUBLE\n";
-// 		printAllConversions(res.d_res);
-// 		return DOUBLE;
-// 	}
-// 	else if (isFloat(this->_value, &res.f_res)){
-// 		cout << "Type detected: FLOAT\n";
-// 		printAllConversions(static_cast<double>(res.f_res));
-// 		return FLOAT;
-// 	}
-// 	else {
-// 		cout << "Type detected: OTHER\n";
-// 		printError();
-// 		return OTHER;
-// 	}
-// }
-
-// void ScalarConvert::_convert(const string& s){
-// 	switch (getType(s)){
-// 		case CHAR:
-
-// 			break;
-// 	}
-// }
