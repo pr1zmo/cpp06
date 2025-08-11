@@ -6,8 +6,8 @@ ScalarConvert::ScalarConvert()
 
 ScalarConvert::ScalarConvert(std::string x)
 	: _value(x) , precision(1) {
-	int prec;
-	for (int i = 0; i < x.size(); i++){
+	int prec = 0;
+	for (int i = 0; i < (int)x.size(); i++){
 		if (x[i] == '.')
 			prec++;
 	}
@@ -29,56 +29,51 @@ ScalarConvert& ScalarConvert::operator=(const ScalarConvert& other){
 ScalarConvert::~ScalarConvert() {
 }
 
-bool ScalarConvert::isInt(std::string x, int *res){
-	try {
-		size_t pos;
-		*res = stoi(x, &pos);
-		return pos == x.length();
-	}
-	catch (const std::invalid_argument&){
+bool ScalarConvert::isInt(const std::string& s, int* res) {
+	char* end;
+	errno = 0;
+	long val = std::strtol(s.c_str(), &end, 10);
+	if (end == s.c_str() || *end != '\0')
 		return false;
-	}
-	catch (const std::out_of_range&){
+	if (errno == ERANGE || val < INT_MIN || val > INT_MAX)
 		return false;
-	}
+	*res = static_cast<int>(val);
+	return true;
 }
 
-bool ScalarConvert::isDouble(std::string x, double *res){
-	try{
-		size_t pos;
-		*res = stod(x, &pos);
-		return pos == x.length();
-	}
-	catch (const std::invalid_argument&){
+bool ScalarConvert::isDouble(const std::string& s, double* res) {
+	char* end;
+	errno = 0;
+	double val = std::strtod(s.c_str(), &end);
+	if (end == s.c_str() || *end != '\0')
 		return false;
-	}
-	catch (const std::out_of_range&){
+	if (errno == ERANGE)
 		return false;
-	}
+	*res = val;
+	return true;
 }
 
-bool ScalarConvert::isFloat(std::string x, float *res){
-	try {
-		size_t pos;
-		*res = stof(x, &pos);
-
-		if (pos == x.length()) {
-			return true;
-		}
-		if (pos == x.length() - 1 && (x[pos] == 'f' || x[pos] == 'F')) {
-			return true;
-		}
+bool ScalarConvert::isFloat(const std::string& s, float* res) {
+	char* end;
+	errno = 0;
+	double val = std::strtod(s.c_str(), &end);
+	if (end == s.c_str())
 		return false;
+	// entire string consumed → treat as float
+	if (*end == '\0') {
+		*res = static_cast<float>(val);
+		return true;
 	}
-	catch (const std::invalid_argument&){
-		return false;
+	// suffix 'f' or 'F'
+	if ((*end == 'f' || *end == 'F') && *(end + 1) == '\0') {
+		*res = static_cast<float>(val);
+		return true;
 	}
-	catch (const std::out_of_range&){
-		return false;
-	}
+	return false;
 }
 
-bool ScalarConvert::isChar(std::string x, char *c){
+
+bool ScalarConvert::isChar(const std::string &x, char *c){
 	if (x.length() == 1 && isalpha(x[0])){
 		*c = x[0];
 		return true;
@@ -131,6 +126,7 @@ void ScalarConvert::printPseudo(const std::string s){
 }
 
 void ScalarConvert::_convert(const std::string &s){
+	(void)s;
 	types res;
 	if (isChar(this->_value, &res.c_res)){
 		std::cout << "Type detected: CHAR\n";

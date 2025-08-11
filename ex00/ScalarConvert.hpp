@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include <climits>
 #include <limits>
+#include <cerrno>
 #include <iomanip>
+#include <cstdlib>
 
 typedef int c_type;
 
@@ -17,10 +20,10 @@ class ScalarConvert {
 		ScalarConvert(const ScalarConvert& other);
 		ScalarConvert& operator=(const ScalarConvert& other);
 		~ScalarConvert();
-		bool isInt(std::string x, int *res);
-		bool isFloat(std::string x, float *res);
-		bool isChar(std::string x, char *res);
-		bool isDouble(std::string x, double *res);
+		bool isInt(const std::string& x, int *res);
+		bool isFloat(const std::string& x, float *res);
+		bool isChar(const std::string& x, char *res);
+		bool isDouble(const std::string& x, double *res);
 		enum c_type{
 			INT,
 			CHAR,

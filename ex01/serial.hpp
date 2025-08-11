@@ -2,7 +2,7 @@
 #define Serializer_HPP
 
 #include <iostream>
-#include <cstdint>
+#include <stdint.h>
 
 struct Data {
 	int count;
